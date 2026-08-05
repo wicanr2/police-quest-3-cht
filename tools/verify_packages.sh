@@ -29,14 +29,23 @@ EXPECT_FP=$(ENGINE_SRC="$W/scummvm-src" bash "$HERE/engine_fingerprint.sh")
 FAIL=0
 
 # 把任一種容器攤平成一個目錄，之後的檢查對目錄跑，不必為三種格式各寫一套
+#
+# [雷] 一定要先把 pkg 轉成絕對路徑：AppImage 那條會 cd 進目標目錄再執行，
+# 傳相對路徑進來的話 cd 之後就找不到檔案了。而且失敗要印出原因——
+# 第一版失敗時什麼都不印，只看到標題後面空一行，比誤判還難查。
 explode() {  # explode <包> <目標目錄>
-  local pkg=$1 dst=$2
+  local pkg dst=$2
+  pkg=$(readlink -f "$1") || { echo "  ✗ 路徑解析失敗：$1"; return 1; }
+  [ -f "$pkg" ] || { echo "  ✗ 檔案不存在：$pkg"; return 1; }
   mkdir -p "$dst"
   case "$pkg" in
-    *.AppImage) (cd "$dst" && "$pkg" --appimage-extract >/dev/null 2>&1) ;;
-    *.zip)      unzip -o -q "$pkg" -d "$dst" ;;
-    *.tar.gz)   tar xzf "$pkg" -C "$dst" ;;
-    *)          echo "  ✗ 不認得的容器格式" ; return 1 ;;
+    *.AppImage)
+      chmod +x "$pkg" 2>/dev/null
+      (cd "$dst" && "$pkg" --appimage-extract >/dev/null 2>&1) \
+        || { echo "  ✗ AppImage 解不開（--appimage-extract 失敗）"; return 1; } ;;
+    *.zip)      unzip -o -q "$pkg" -d "$dst" || { echo "  ✗ zip 解不開"; return 1; } ;;
+    *.tar.gz)   tar xzf "$pkg" -C "$dst"     || { echo "  ✗ tar.gz 解不開"; return 1; } ;;
+    *)          echo "  ✗ 不認得的容器格式"; return 1 ;;
   esac
 }
 
