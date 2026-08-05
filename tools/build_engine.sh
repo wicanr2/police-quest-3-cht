@@ -2,7 +2,9 @@
 # 編譯 SCI-only ScummVM（docker，[HARD] 規則：編譯一律走 docker）
 # 用法：build_engine.sh [--configure]
 set -e
-ROOT=/home/anr2/scummvm/police_quest3/workplace
+# 路徑不寫死：以腳本所在位置推導，允許環境變數覆寫
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="${PQ3_WORKPLACE:-$(dirname "$HERE")}"
 SRC=$ROOT/scummvm-src
 JOBS=$(( $(nproc) - 2 ))
 

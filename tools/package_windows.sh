@@ -16,7 +16,12 @@
 set -euo pipefail
 
 MODE=${1:?需要 patch 或 full}
-W=/home/anr2/scummvm/police_quest3/workplace
+# 路徑不寫死：以腳本所在位置推導專案根目錄，允許環境變數覆寫。
+# （寫死 /home/anr2/... 的話，別人 clone 下來這支就直接失效。）
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+W="${PQ3_WORKPLACE:-$(dirname "$HERE")}"
+# MT-32 ROM 有版權、不在 repo 裡，位置由環境變數指定（預設是本機慣用路徑）
+MT32_ROM_SRC="${MT32_ROM_SRC:-$HOME/cht/mt32}"
 STAGE=$W/build/win-$MODE
 OUT=$W/dist-all
 rm -rf "$STAGE"; mkdir -p "$STAGE/cht" "$OUT"
@@ -33,8 +38,8 @@ if [ "$MODE" = "full" ]; then
   mkdir -p "$STAGE/game"
   cp "$W"/game/RESOURCE.* "$STAGE/game/"
   cp "$W"/game/*.SCR "$W"/game/*.TEX "$W"/game/*.V56 "$STAGE/game/" 2>/dev/null || true
-  cp /home/anr2/cht/mt32/MT32_CONTROL.1987-10-07.v1.07.ROM "$STAGE/game/MT32_CONTROL.ROM" 2>/dev/null || true
-  cp /home/anr2/cht/mt32/MT32_PCM.ROM "$STAGE/game/MT32_PCM.ROM" 2>/dev/null || true
+  cp "$MT32_ROM_SRC/MT32_CONTROL.1987-10-07.v1.07.ROM" "$STAGE/game/MT32_CONTROL.ROM" 2>/dev/null || true
+  cp "$MT32_ROM_SRC/MT32_PCM.ROM" "$STAGE/game/MT32_PCM.ROM" 2>/dev/null || true
 fi
 
 # ── ini：UTF-8 靜態檔，相對路徑（玩家搬資料夾也不用重建設定）─────────────
@@ -110,7 +115,7 @@ rm -f "$OUT/$NAME"
 
 # ── 收尾檢查 ─────────────────────────────────────────────────────────
 echo "=== 檢查 $NAME ==="
-python3 - "$OUT/$NAME" "$MODE" <<'PY'
+PQ3_DIST_CHT="$W/dist-cht" python3 - "$OUT/$NAME" "$MODE" <<'PY'
 import sys, zipfile, re
 p, mode = sys.argv[1], sys.argv[2]
 z = zipfile.ZipFile(p)
@@ -172,7 +177,7 @@ else:
 
 # 8. 中文資料反查缺件（用 dist-cht 清單當基準，不是只比對「包裡找到的」）
 import os
-need = set(os.listdir('/home/anr2/scummvm/police_quest3/workplace/dist-cht')) | {'ENGINE.txt'}
+need = set(os.listdir(os.environ.get('PQ3_DIST_CHT','dist-cht'))) | {'ENGINE.txt'}
 have = {n.split('/')[-1] for n in names if n.startswith('cht/')}
 missing = need - have
 if missing:

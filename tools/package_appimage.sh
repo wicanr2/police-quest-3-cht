@@ -7,7 +7,12 @@
 set -euo pipefail
 
 MODE=${1:?需要 patch 或 full}
-W=/home/anr2/scummvm/police_quest3/workplace
+# 路徑不寫死：以腳本所在位置推導專案根目錄，允許環境變數覆寫。
+# （寫死 /home/anr2/... 的話，別人 clone 下來這支就直接失效。）
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+W="${PQ3_WORKPLACE:-$(dirname "$HERE")}"
+# MT-32 ROM 有版權、不在 repo 裡，位置由環境變數指定（預設是本機慣用路徑）
+MT32_ROM_SRC="${MT32_ROM_SRC:-$HOME/cht/mt32}"
 OUT=$W/dist-all
 mkdir -p "$OUT"
 
@@ -34,7 +39,7 @@ if [ "$MODE" = "full" ]; then
   cp "$W"/game/*.SCR "$W"/game/*.TEX "$W"/game/*.V56 "$APPDIR/usr/share/game/" 2>/dev/null || true
   # MT-32 ROM 只有 full 版（本機保留）能附；[HARD] 絕不入 git、絕不上 Release
   for pair in "MT32_CONTROL.1987-10-07.v1.07.ROM:MT32_CONTROL.ROM" "MT32_PCM.ROM:MT32_PCM.ROM"; do
-    src=/home/anr2/cht/mt32/${pair%%:*}; dst=${pair##*:}
+    src="$MT32_ROM_SRC/${pair%%:*}"; dst=${pair##*:}
     [ -f "$src" ] && cp "$src" "$APPDIR/usr/share/game/$dst"
   done
 fi

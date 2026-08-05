@@ -14,7 +14,12 @@
 set -euo pipefail
 
 SRC=${1:?需要 CI 的 engine tar.gz}
-W=/home/anr2/scummvm/police_quest3/workplace
+# 路徑不寫死：以腳本所在位置推導專案根目錄，允許環境變數覆寫。
+# （寫死 /home/anr2/... 的話，別人 clone 下來這支就直接失效。）
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+W="${PQ3_WORKPLACE:-$(dirname "$HERE")}"
+# MT-32 ROM 有版權、不在 repo 裡，位置由環境變數指定（預設是本機慣用路徑）
+MT32_ROM_SRC="${MT32_ROM_SRC:-$HOME/cht/mt32}"
 STAGE=$W/build/macos-full
 OUT=$W/dist-all
 rm -rf "$STAGE"; mkdir -p "$STAGE" "$OUT"
@@ -29,8 +34,8 @@ mkdir -p "$G"
 cp "$W"/game/RESOURCE.* "$G/"
 cp "$W"/game/*.SCR "$W"/game/*.TEX "$W"/game/*.V56 "$G/" 2>/dev/null || true
 cp "$W"/dist-cht/* "$G/"
-cp /home/anr2/cht/mt32/MT32_CONTROL.1987-10-07.v1.07.ROM "$G/MT32_CONTROL.ROM"
-cp /home/anr2/cht/mt32/MT32_PCM.ROM "$G/MT32_PCM.ROM"
+cp "$MT32_ROM_SRC/MT32_CONTROL.1987-10-07.v1.07.ROM" "$G/MT32_CONTROL.ROM"
+cp "$MT32_ROM_SRC/MT32_PCM.ROM" "$G/MT32_PCM.ROM"
 
 # 啟動器：.app 旁邊的一支 .command，不動 bundle 的啟動機制
 # （script 當進入點 / 改過的 Info.plist / codesign --deep 對混合結構，
