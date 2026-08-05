@@ -1,0 +1,20 @@
+# [HARD] 遊戲原始資源與 MT-32 ROM 一律不入 repo
+game/
+RESOURCE.*
+resource.*
+*.DRV
+*.EXE
+*.ROM
+
+# 建置產物
+scummvm-src/
+scummvm-win/
+build/
+dist/
+dist-all/
+out/
+extract/
+font-src/
+*.o
+*.d
+__pycache__/

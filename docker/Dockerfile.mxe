@@ -1,0 +1,19 @@
+# 人生劇場 CHT ScummVM → Windows(x86_64)靜態跨編,用 MXE apt 預編包。
+FROM ubuntu:20.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gnupg ca-certificates git make pkg-config \
+ && rm -rf /var/lib/apt/lists/*
+# MXE apt repo(靜態 x86_64 mingw)
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C6BF758A33A3A276 && \
+    echo "deb [arch=amd64] https://pkg.mxe.cc/repos/apt focal main" > /etc/apt/sources.list.d/mxeapt.list
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    mxe-x86-64-w64-mingw32.static-gcc \
+    mxe-x86-64-w64-mingw32.static-sdl2 \
+    mxe-x86-64-w64-mingw32.static-zlib \
+    mxe-x86-64-w64-mingw32.static-libpng \
+    mxe-x86-64-w64-mingw32.static-freetype \
+ && rm -rf /var/lib/apt/lists/*
+ENV PATH="/usr/lib/mxe/usr/bin:${PATH}"
+ENV MXE_PREFIX=/usr/lib/mxe/usr/x86_64-w64-mingw32.static
+WORKDIR /src

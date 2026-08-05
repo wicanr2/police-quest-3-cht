@@ -1,0 +1,42 @@
+vanishingY:	消失點Y：
+Enter Flag Number:	輸入旗標編號：
+Outta here!	滾出去！
+Talker	對白資源
+zg@g 4	zg@g 4
+Slider	滑桿
+Polygon	多邊形
+Feature	特性
+Enter drive letter, path and your name\n(no extension, max 40 characters)	輸入磁碟機代號、路徑和姓名\n(無副檔名，最多 40 字)
+resource.cfg	resource.cfg
+Enter your initials (up to 3 characters):	輸入簽名首字母(最多 3 字)：
+Enter configuration file name (or hit return to skip):	輸入組態檔名(或按 Enter 略過)：
+append to it	附加到檔案
+overwrite it	覆寫檔案
+Chase	追逐
+Grooper	Grooper
+Grycler	Grycler
+Window	視窗
+Sound	音效
+  Save  	  儲存  
+Replace	取代
+Select the game that you would like to restore.	選擇你想還原的遊戲。
+Type the description of this saved game.	輸入此存檔的描述。
+This directory/disk can hold no more saved games. You must replace one of your saved games or use Change Directory to save on a different directory/disk.	此目錄/磁碟無法再容納存檔。你必須取代現有的存檔，或使用「更換目錄」在其他位置儲存。
+Save a Game	存檔
+Save	儲存
+Cancel	取消
+ Cancel 	 取消 
+ Delete 	 刪除 
+with:	與：
+Cycle	循環
+Motion	動作
+controls	控制項
+Locale	地區
+Change Directory	更換目錄
+Roger is carrying:	Roger 正在攜帶：
+nothing!	什麼都沒有！
+Enter input	輸入
+Actor	角色
+Collect	收集
+Script	指令稿
+Event	事件

@@ -1,0 +1,7 @@
+# Python 字型/資源工具鏈（Pillow 烘 Big5 點陣字；fonts-arphic-uming 只當倚天缺字 fallback）
+FROM python:3.12-slim
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    fonts-arphic-uming fonts-noto-cjk \
+ && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir Pillow
+WORKDIR /w

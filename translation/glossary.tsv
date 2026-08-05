@@ -1,0 +1,80 @@
+# 《警察故事3》繁中譯名表
+#
+# 譯名路線：沿用 PQ1（保留英文專有名詞），一手佐證＝1993 年《軟體世界》第 35 期
+# 〈警察故事3 完全攻略（一）〉，該文把 Sonny Bonds、Lytton、Jessie Bains、Marie、
+# Pat Morales 等直接以英文嵌在中文句子裡。PQ2 採音譯（桑尼．邦茲／萊頓）是後來的
+# 二手選擇，與當年一手資料及前作不一致，本作不採用。
+#
+# 欄位：English <TAB> 繁體中文 <TAB> 備註
+
+## 遊戲名與系列
+Police Quest	警察故事	系列名
+Police Quest 3	警察故事3	當年台灣代理商廣告與《軟體世界》均用此名
+The Kindred	血親	副標；當年廣告另作「陰謀」，正文採「血親」較貼原意
+
+## 人名（一律保留英文原拼寫，不音譯）
+Sonny Bonds	Sonny Bonds	主角
+Sonny	Sonny
+Bonds	Bonds
+Marie	Marie	Sonny 之妻
+Jessie Bains	Jessie Bains	前作反派
+Michael Bains	Michael Bains
+Pat Morales	Pat Morales	交通組女警
+Morales	Morales
+Jim Walls	Jim Walls	原作者，真警察出身
+
+## 地名（保留英文）
+Lytton	Lytton	城市名
+Lytton Police Department	Lytton 警局
+Lytton P.D.	Lytton 警局
+L.P.D.	Lytton 警局
+Aspen Falls	Aspen Falls
+Oak Tree Mall	Oak Tree Mall
+Lytton General	Lytton 綜合醫院
+
+## 警階（依 PQ1；「警佐」為 Sergeant，非 Lieutenant）
+Sergeant	警佐	Sonny 本作的階級
+Sgt.	警佐
+Detective	警探
+Detective Sergeant	警探警佐
+Officer	警員
+Lieutenant	中尉	依 PQ1；PQ2 譯「警佐」與本表衝突，本作不採
+Captain	警監
+Chief	警察局長
+
+## 警務術語
+police officer	警察
+patrol	巡邏
+traffic stop	交通攔查
+citation	罰單
+evidence	證物
+book evidence	登錄證物
+suspect	嫌犯
+witness	證人
+arrest	逮捕
+dispatch	勤務中心	名詞；PQ1 譯「調度」，本作因大量出現無線電呼叫，改用台灣警界慣稱
+dispatcher	勤務中心人員
+Miranda rights	米蘭達權利
+homicide	命案／重案	視語境
+narcotics	緝毒組
+coroner	法醫
+warrant	搜索票
+search warrant	搜索票
+judicial order	法院命令
+field kit	現場勘查箱
+crime scene	犯罪現場
+K9 unit	警犬隊
+APB / all points bulletin	全面通報
+10-4	收到	無線電回覆，台灣警廣慣譯
+10-97	抵達現場
+187	命案	美國加州刑法條號，保留數字不譯
+Officer's Manual	警員手冊	防拷查表用；中譯速查表見 docs/中文條號速查.md
+vehicle code	車輛法規代碼
+penal code	刑法條號
+
+## 裝備
+PR-24	PR-24 警棍
+Baretta	Baretta	槍款，保留原拼寫（原文即拼作 Baretta，非 Beretta）
+handcuffs	手銬
+holster	槍套
+flashlight	手電筒

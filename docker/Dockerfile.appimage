@@ -1,0 +1,17 @@
+# 人生劇場 CHT ScummVM → Linux AppImage 打包環境
+FROM debian:12-slim
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates wget file patchelf desktop-file-utils imagemagick zsync \
+    libsdl2-2.0-0 libpng16-16 libjpeg62-turbo libfreetype6 \
+    libvorbisfile3 libvorbis0a libogg0 libflac12 libmad0 libmpeg2-4 \
+    libasound2 libpulse0 fuse3 libfuse2 \
+    libsndio7.0 libmpg123-0 libout123-0 libsamplerate0 \
+    libdecor-0-0 libgbm1 libdrm2 libwayland-client0 libwayland-cursor0 \
+    libwayland-egl1 libasyncns0 libbsd0 libmp3lame0 \
+ && rm -rf /var/lib/apt/lists/*
+# AppImage 工具(extract-and-run 模式,免 FUSE)
+RUN wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -O /opt/linuxdeploy && \
+    wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O /opt/appimagetool && \
+    chmod +x /opt/linuxdeploy /opt/appimagetool
+ENV APPIMAGE_EXTRACT_AND_RUN=1
+WORKDIR /w
