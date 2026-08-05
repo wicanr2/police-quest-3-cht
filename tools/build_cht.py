@@ -68,8 +68,14 @@ def fullwidthize(s):
         nxt = s[i + 1] if i + 1 < n else ""
         if ch in HALF2FULL and (_is_cjk(prev) or _is_cjk(nxt)):
             out.append(HALF2FULL[ch])
-        elif ch == "." and _is_cjk(prev) and not nxt.isdigit():
-            out.append("。")  # 中文句末句號
+        elif ch == "." and _is_cjk(prev) and not nxt.isdigit() and nxt != ".":
+            # 中文句末句號。
+            # [雷] 一定要排除「後面還接著點」——省略號 `...` 的第一個點前面正好是中文字，
+            # 少了這個條件就會把「嗯...」烘成「嗯。..」（句號後面掛兩個半形點）。
+            # PQ3 有 22 則對白中招，而且**只有 Big5 輸出檔看得到**：master 的 UTF-8
+            # 是好的，覆蓋率統計、譯文驗證器、字型 fallback 數全部正常，
+            # 只有實際玩到那句話才會發現。
+            out.append("。")
         else:
             out.append(ch)
     return "".join(out)

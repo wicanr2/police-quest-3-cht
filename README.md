@@ -110,6 +110,23 @@ python3 tools/validate_batches.py translation/full_skeleton.tsv translation/batc
 
 它會檢查 key 是否逐字元對得上（差一個尾端空白，引擎就會靜默退回英文）、`%` 格式符數量與順序、`\n` 數量、以及每個字是否都在 Big5 內。
 
+**譯文的唯一真相是 `translation/translation_utf8.tsv`**，要改就改它。`translation/batch/`
+是當初分批翻譯的歷史輸入，`tools/merge_translations.py` 是當時的合併工具——它以
+`strip()` 後的英文當 key，而本作有 5 組「只差前後空白、譯文也不同」的配對
+（`    Quit    ` → `    離開    ` 與 `Quit` → `離開`，選單按鈕靠那些空白對齊），
+它表達不了。拿它的輸出覆蓋 master 會把那 5 組靜默塌成一個值，所以那支現在會直接拒絕寫入 master。
+
+### 驗收
+
+```bash
+tools/verify_packages.sh                    # 六個包：中文資料反查缺件 + md5 + 引擎指紋 + 遊戲資源
+tools/verify_packages.sh --self-test        # 正對照：故意造壞包，確認每條規則都叫得出來
+tools/smoke_appimage.sh <包> <輸出目錄>      # 開機實測：進遊戲、逼出一句中文並截圖
+```
+
+前者驗「包裡有什麼」，後者驗「包跑不跑得起來」——AppRun 路徑寫錯、字型載不進去、
+ROM 沒被認出來，靜態檢查全部看不到。
+
 ## 已知問題
 
 - **警用電腦的所有功能列仍是英文，而且做不了。** 那些字不是遊戲文字，是**烘進美術的點陣圖**——
