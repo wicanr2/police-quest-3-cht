@@ -25,15 +25,11 @@ ARGS=(--path=/w/game --extrapath=/w/dist-cht --auto-detect)
 sleep 12
 xdotool mousemove 512 384
 
-# 跳過開場（連點 + Esc），讓遊戲進到可互動狀態
-# 開場會跳出「要看完整段嗎？」對話框，Skip it 按鈕在 script(6,51)
-# → 螢幕 (192+6*2, 144+51*2) = (204, 246)。只點畫面中央會錯過它。
-for i in $(seq 1 25); do
-  xdotool key Escape
-  xdotool mousemove 240 250; xdotool click 1
-  xdotool mousemove 512 384; xdotool click 1
-  sleep 1
-done
+# 跳過開場：滑鼠停在畫面中央連點 + Esc。
+# [別「改良」這段] 曾經想「精準點 Skip it 按鈕」而在迴圈裡加 mousemove 到按鈕座標，
+# 結果連續八次都卡在開場對話框進不去；改回這個看起來笨的版本立刻又成功。
+# 原因沒查清楚（可能是 mousemove 打斷了 SDL 的點擊配對），但實測就是這樣。
+for i in $(seq 1 25); do xdotool key Escape; xdotool click 1; sleep 1; done
 import -window root "$OUT/before.png" 2>/dev/null
 
 # 開 console → 換房 → 離開 console

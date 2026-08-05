@@ -33,13 +33,14 @@
 | 分數／時間顯示 | ✅（`%d／%d` 動態句） |
 | 人名、地名、街道地址 | 保留英文原文（見下） |
 | 圖示列上的 `SCORE` 字樣 | ❌ 烘在美術裡，未處理 |
-| CHIPSTER 終端機的功能列 | ❌ 見〈已知問題〉 |
+| 警用電腦的功能列 | ❌ 烘在美術裡，尺寸塞不下中文，見〈已知問題〉 |
 
 ### 譯名為什麼保留英文
 
 1993 年《軟體世界》第 35–37 期的〈警察故事3 完全攻略〉把 `Sonny Bonds`、`Lytton`、`Jessie Bains`、`Marie`、`Pat Morales` 直接以英文嵌在中文句子裡。前作《警察故事》的中文化也是這個做法。本專案沿用，理由是一手資料優先於後來的推論。完整對照見 [`translation/glossary.tsv`](translation/glossary.tsv)。
 
-警階與警務術語則全部中譯：`Sergeant` → 警佐、`Officer` → 警員、`dispatch` → 勤務中心、`10-4` → 收到。
+警階與警務術語則全部中譯：`Sergeant` → 警佐、`dispatch` → 勤務中心、`10-4` → 收到。
+`Officer` 分兩種：階級稱謂譯「警員」，當面稱呼譯「警官」——台灣中文對警察當面就是叫警官，一律改成警員反而不自然。
 
 ## 安裝與遊玩
 
@@ -51,8 +52,8 @@
 | Windows | `PQ3-CHT-patch-win64.zip` | 約 11 MB |
 | macOS | `PQ3-CHT-patch-macos-universal.tar.gz`（arm64 + x86_64） | 約 16 MB |
 
-三個包裡的 `ENGINE.txt` 都記著同一組引擎指紋（`49b9ed5a6eab`），這是用來擋
-「中文資料沒變、但包裡裝著舊 binary」的——那種狀況下只比對資料 md5 會全綠。
+三個包裡的 `ENGINE.txt` 都記著同一組引擎指紋，這是用來擋「中文資料沒變、
+但包裡裝著舊 binary」的——那種狀況下只比對資料 md5 會全綠。
 
 macOS 首次執行要先跑包內的 `修復－macOS.command`（未簽署的 app 會被 Gatekeeper 擋，
 那支會移除隔離屬性並重新 ad-hoc 簽章）。
@@ -60,7 +61,7 @@ macOS 首次執行要先跑包內的 `修復－macOS.command`（未簽署的 app
 你需要：
 
 1. 一份 Police Quest 3 的 DOS 版（`RESOURCE.MAP` + `RESOURCE.000`～`.004`）。
-2. 本專案的 `dist-cht/` 三個檔案：`translation.tsv`、`pq3_big5.fnt`、`pq3_big5_hi.fnt`。
+2. 本專案 `dist-cht/` 的三個中文資料檔：`translation.tsv`、`pq3_big5.fnt`、`pq3_big5_hi.fnt`。
 3. 一份套過 `patches/` 的 ScummVM。
 
 啟動時把中文資料夾指給 `--extrapath`，語言指定 `tw`：
@@ -83,7 +84,7 @@ patch -p1 < ../patches/0001-sci-cht-zh_twn.patch
 cp ../patches/fontchinese.{cpp,h} engines/sci/graphics/
 
 # 3. 編（MT-32 一定要編進去，別帶 --disable-mt32emu）
-./configure --enable-engine=sci --disable-all-engines --enable-engine=sci
+./configure --disable-all-engines --enable-engine=sci
 make -j
 ```
 
@@ -111,11 +112,28 @@ python3 tools/validate_batches.py translation/full_skeleton.tsv translation/batc
 
 ## 已知問題
 
-- **CHIPSTER 終端機的功能列（`REVIEW CASE` / `NEW FILE` / `SERIAL #` / `QUIT`）仍是英文。** 這四個字串在解壓後的 script、text、message 資源裡都找不到，也對不上任何一個 view cel 的尺寸，來源尚未查清。
+- **警用電腦的所有功能列仍是英文，而且做不了。** 那些字不是遊戲文字，是**烘進美術的點陣圖**——
+  `view.197` 裡有 16 個 cel，涵蓋整套電腦介面：`DMV`、`HOMICIDE`、`PERSONNEL`、`TOOLS`、`QUIT`、
+  `REVIEW CASE`、`NEW FILE`、`DRIVER'S ID`、`VIN ID`、`PLATE ID`、`DRAWING COMPOSITE`、
+  `CITY MAP`、`PLOT CRIMES`、`CHECK PATTERN`、`ERASE`、`FORM 900`，每一項還有一般與反白兩份。
+
+  ![view.197 的選單 cel](screenshots/05-view197-menu-cels.png)
+
+  做不了的理由是量出來的：**cel 高 11 px，文字帶只有 10 列**，而倚天點陣字最小是 15 列。
+  差 5 列不是靠參數能補的，硬塞會蓋掉上下的框線。
 
   ![CHIPSTER 終端機](screenshots/04-chipster-terminal.png)
 
-- **終端機的欄位式畫面（`VICTIM - `、`LOCATION - ` 這類）沒有實機驗過。** 這種畫面走 `kernelDisplay` 的絕對座標，行距是照 8px 拉丁字型排的；中文字較高，前作 PQ1 在同型畫面上出現過上下兩行相黏。本作的欄位標籤都已翻譯，但要走完案件流程才看得到，headless 驅動沒能穩定進到那一步。**如果你玩到查詢畫面發現字黏在一起，請開 issue 附截圖。**
+- **終端機的欄位式記錄表（`VICTIM - `、`LOCATION - ` 這類）沒有實機驗過。**
+  終端機本身是好的——提示字已確認顯示為「輸入案號：」，位置與字距都正常：
+
+  ![終端機中文提示](screenshots/06-terminal-prompt.png)
+
+  沒驗到的是把案號輸進去之後那張記錄表。那種畫面走 `kernelDisplay` 的絕對座標，
+  行距照 8px 拉丁字型排，中文字較高，前作 PQ1 在同型畫面上出現過上下兩行相黏。
+  用除錯器直接跳到那個房間拿到的是**空的遊戲進度**（案號要玩到第二天才建檔），
+  查詢一定回空、欄位根本不會畫出來，所以只能靠實際玩到那裡才驗得到。
+  **如果你玩到查詢畫面發現字黏在一起，請開 issue 附截圖。**
 
 - **圖示列上的 `SCORE` 字樣是美術**，要換得重繪 cel，目前保留英文。
 
@@ -132,7 +150,7 @@ python3 tools/validate_batches.py translation/full_skeleton.tsv translation/batc
 | [`docs/攻略.md`](docs/攻略.md) | 依《軟體世界》第 35–37 期連載整理的流程攻略 |
 | [`docs/作者訪談.md`](docs/作者訪談.md) | Jim Walls 的背景：真警察出身、槍戰負傷退休、寫進遊戲的警務程序 |
 | [`docs/scans/`](docs/scans/) | 上述雜誌的掃描件原件，各附出處 |
-| [`docs/lessons-pq3.md`](docs/lessons-pq3.md) | 這輪中文化查證過的技術結論與兩項未查清的開放問題 |
+| [`docs/lessons-pq3.md`](docs/lessons-pq3.md) | 這輪查證過的技術結論，以及一項仍待實機驗證的開放問題 |
 
 ## 專案結構
 

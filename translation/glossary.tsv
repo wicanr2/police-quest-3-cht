@@ -37,7 +37,9 @@ Sergeant	警佐	Sonny 本作的階級
 Sgt.	警佐
 Detective	警探
 Detective Sergeant	警探警佐
-Officer	警員
+Officer	警員	階級稱謂時用；見下一條
+Officer（當面稱呼）	警官	「Look Officer, I'm sorry」「Officer Bonds, I'm Dr. Wagner」這類。台灣中文對警察當面就是叫「警官」，一律改成「警員」反而不自然。實際譯文裡 75 處作階級用、21 處作稱呼用，是有意的區分
+police officer（泛稱）	警察
 Lieutenant	中尉	依 PQ1；PQ2 譯「警佐」與本表衝突，本作不採
 Captain	警監
 Chief	警察局長

@@ -10,7 +10,7 @@ run() { docker run --rm --name pq3-engine-build -v "$SRC":/src -w /src pq3-build
 
 if [ "$1" = "--configure" ] || [ ! -f "$SRC/config.mk" ]; then
   # [HARD] ⑤：不得帶 --disable-mt32emu，MT-32 一律編入
-  run "./configure --enable-engine=sci --disable-all-engines --enable-engine=sci \
+  run "./configure --disable-all-engines --enable-engine=sci \
         --disable-debug --enable-release \
         --disable-libcurl --disable-sonivox --disable-tinygl" 2>&1 | tail -25
   run "grep -E 'USE_MT32EMU' config.h" || { echo '!! MT-32 未編入，違反 ⑤ [HARD]'; exit 3; }

@@ -475,7 +475,7 @@ index 94d96a6e..b4c689eb 100644
  	graphics/fontsjis.o \
  	graphics/macfont.o \
 diff --git a/engines/sci/sci.cpp b/engines/sci/sci.cpp
-index b4d28b79..1a3ee5c7 100644
+index b4d28b79..2c12f308 100644
 --- a/engines/sci/sci.cpp
 +++ b/engines/sci/sci.cpp
 @@ -19,6 +19,9 @@
@@ -503,7 +503,7 @@ index b4d28b79..1a3ee5c7 100644
 +	// CHT tooling: dump decompressed text/message/script resources as patch files
 +	// (uses ScummVM's own SCI decompressor). Triggered by SCI_DUMP_RES=<dir>; quits after.
 +	if (const char *dumpDir = getenv("SCI_DUMP_RES")) {
-+		const ResourceType dumpTypes[] = { kResourceTypeText, kResourceTypeMessage, kResourceTypeFont, kResourceTypeScript, kResourceTypeHeap, kResourceTypeView, kResourceTypePic, kResourceTypeSound, kResourceTypePatch };
++		const ResourceType dumpTypes[] = { kResourceTypeText, kResourceTypeMessage, kResourceTypeFont, kResourceTypeScript, kResourceTypeHeap, kResourceTypeView, kResourceTypePic, kResourceTypeSound, kResourceTypePatch, kResourceTypeVocab, kResourceTypeCursor, kResourceTypePalette };
 +		for (int ti = 0; ti < (int)ARRAYSIZE(dumpTypes); ++ti) {
 +			Common::List<ResourceId> list = _resMan->listResources(dumpTypes[ti], -1);
 +			for (Common::List<ResourceId>::iterator it = list.begin(); it != list.end(); ++it) {
