@@ -1,8 +1,9 @@
-# 人生劇場 CHT ScummVM → Windows(x86_64)靜態跨編,用 MXE apt 預編包。
+# 《警察故事3》CHT ScummVM → Windows(x86_64) 靜態跨編，用 MXE apt 預編包。
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gnupg ca-certificates git make pkg-config \
+    binutils \
  && rm -rf /var/lib/apt/lists/*
 # MXE apt repo(靜態 x86_64 mingw)
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C6BF758A33A3A276 && \

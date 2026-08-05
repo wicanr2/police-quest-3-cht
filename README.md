@@ -10,7 +10,7 @@
 
 這裡只有 ScummVM 的引擎修改與中文資料，**不含遊戲本體**，你需要自備一份 Police Quest 3 的 DOS 版。想直接開始，跳到〈安裝與遊玩〉。
 
-![開場對話框](screenshots/01-intro-dialog.png)
+![標題畫面](screenshots/00-title.png)
 
 ---
 
@@ -18,7 +18,8 @@
 
 | | |
 |---|---|
-| ![遊戲內對白](screenshots/02-ingame-text.png) | ![Lytton 警局](screenshots/03-lytton-pd.png) |
+| ![開場對話框](screenshots/01-intro-dialog.png) | ![遊戲內對白](screenshots/02-ingame-text.png) |
+| ![Lytton 警局](screenshots/03-lytton-pd.png) | |
 
 ## 這個版本翻了什麼
 
@@ -41,6 +42,20 @@
 警階與警務術語則全部中譯：`Sergeant` → 警佐、`Officer` → 警員、`dispatch` → 勤務中心、`10-4` → 收到。
 
 ## 安裝與遊玩
+
+三個平台都出 patch 版（只有引擎與中文資料，玩家自備遊戲）：
+
+| 平台 | 檔案 | 大小 |
+|---|---|---|
+| Linux | `PQ3-CHT-patch-linux-x86_64.AppImage` | 約 13 MB |
+| Windows | `PQ3-CHT-patch-win64.zip` | 約 11 MB |
+| macOS | `PQ3-CHT-patch-macos-universal.tar.gz`（arm64 + x86_64） | 約 16 MB |
+
+三個包裡的 `ENGINE.txt` 都記著同一組引擎指紋（`49b9ed5a6eab`），這是用來擋
+「中文資料沒變、但包裡裝著舊 binary」的——那種狀況下只比對資料 md5 會全綠。
+
+macOS 首次執行要先跑包內的 `修復－macOS.command`（未簽署的 app 會被 Gatekeeper 擋，
+那支會移除隔離屬性並重新 ad-hoc 簽章）。
 
 你需要：
 

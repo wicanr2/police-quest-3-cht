@@ -13,5 +13,8 @@ SRC=${1:-${ENGINE_SRC:-}}
 [ -n "$SRC" ] || { echo "!! 需要 ScummVM 樹路徑（參數或 ENGINE_SRC）"; exit 2; }
 [ -d "$SRC/engines/sci" ] || { echo "!! $SRC/engines/sci 不存在"; exit 2; }
 
+# [HARD] LC_ALL=C：sort 的排序受 locale 影響，本機（zh_TW.UTF-8）與 CI runner（C）
+# 會排出不同順序 → 同一棵樹算出兩個不同指紋。不穩定的指紋比沒有指紋更糟，
+# 因為它會一直誤報，然後人就開始忽略它。
 find "$SRC/engines/sci" \( -name '*.cpp' -o -name '*.h' \) -print0 \
-  | sort -z | xargs -0 shasum -a 256 | awk '{print $1}' | shasum -a 256 | cut -c1-12
+  | LC_ALL=C sort -z | xargs -0 shasum -a 256 | awk '{print $1}' | shasum -a 256 | cut -c1-12
