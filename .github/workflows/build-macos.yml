@@ -216,23 +216,24 @@ jobs:
           # 啟動器是 .app 旁邊的一支 .command，不動 bundle 的啟動機制：
           # script 當 bundle 進入點 / 改過的 Info.plist / codesign --deep 對混合結構，
           # 任何一環出問題，Finder 雙擊都是靜默失敗，玩家只能回報「沒反應」。
-          cat > 玩－警察故事3－中文版.command <<'LAUNCH'
-#!/bin/bash
-cd "$(dirname "$0")"
-read -r -p "請輸入 Police Quest 3 遊戲資料夾路徑：" GAMEDIR
-exec ./ScummVM.app/Contents/MacOS/scummvm \
-  --path="$GAMEDIR" \
-  --extrapath="$PWD/ScummVM.app/Contents/Resources/cht-data" \
-  --auto-detect --language=tw
-LAUNCH
-          chmod +x 玩－警察故事3－中文版.command
-          cat > 修復－macOS.command <<'FIX'
-#!/bin/bash
-cd "$(dirname "$0")"
-xattr -cr ScummVM.app && codesign --force --deep --sign - ScummVM.app
-echo "已移除隔離屬性並重新簽章，可以開啟 ScummVM.app 了。"
-FIX
-          chmod +x 修復－macOS.command
+          # 用 printf 而不是 heredoc：heredoc 的內容在 YAML block scalar 裡若不縮排會破壞
+          # YAML，縮排了 shebang 又不在第 0 byte。printf 兩邊都不得罪。
+          L=玩－警察故事3－中文版.command
+          printf '%s\n' '#!/bin/bash' \
+            'cd "$(dirname "$0")"' \
+            'read -r -p "請輸入 Police Quest 3 遊戲資料夾路徑：" GAMEDIR' \
+            'exec ./ScummVM.app/Contents/MacOS/scummvm \' \
+            '  --path="$GAMEDIR" \' \
+            '  --extrapath="$PWD/ScummVM.app/Contents/Resources/cht-data" \' \
+            '  --auto-detect --language=tw' > "$L"
+          chmod +x "$L"
+
+          F=修復－macOS.command
+          printf '%s\n' '#!/bin/bash' \
+            'cd "$(dirname "$0")"' \
+            'xattr -cr ScummVM.app && codesign --force --deep --sign - ScummVM.app' \
+            'echo "已移除隔離屬性並重新簽章，可以開啟 ScummVM.app 了。"' > "$F"
+          chmod +x "$F"
           tar czf "$GITHUB_WORKSPACE/dist-macos/PQ3-CHT-patch-macos-universal.tar.gz" \
             ScummVM.app 玩－警察故事3－中文版.command 修復－macOS.command
 
