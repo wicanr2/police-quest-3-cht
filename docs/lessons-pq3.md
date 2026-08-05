@@ -128,6 +128,29 @@ elif ch == "." and _is_cjk(prev) and not nxt.isdigit():   # ← 缺 nxt != "."
 - **`gh run watch --exit-status` 回非零不等於 CI 失敗**（這次是 Node 20 deprecation
   annotation）。真相在 artifact 與 `gh run view`，不在 watcher 的 exit code。
 
+## 推廣片
+
+- **本作有配樂，而且是連續的。** 即時側錄 137 秒，整檔 mean −25.6 dB、max −4.5 dB，
+  每 20 秒分段都有聲。所以直接用真實 Munt MT-32 輸出，不必走「離線抽 sound 資源
+  轉 MIDI 再用 GM 音色渲染」那條路。（前作 PQ1 相反：134 筆 sound 只有 2 首有樂。
+  **這件事每款都要自己量，別套上一款的結論。**）
+  側錄 [HARD]：不要設 `SDL_DISKAUDIODELAY=0`——SCI 的音樂排序器依遊戲時鐘推進，
+  全速灌檔會錄到一整片靜音，而且是 GB 級的。
+- **`--extrapath` 只能有一個，第二個會蓋掉第一個。** 為了開 MT-32 而多加一個指向 ROM 夾的
+  `--extrapath`，整輪擷取的中文靜默失效——畫面看起來只是「這句沒翻譯」。
+  引擎其實有大聲警告 `could not open 'pq3_big5.fnt'; Chinese glyphs will be blank!`，
+  但只數截圖張數不會看到。**擷取腳本收尾要自檢 `CHT: loaded N`**（那行是 `debug(1,…)`，
+  要帶 `-d1` 才會印——我第一版自檢就是漏了這點而誤報）。
+- **這台的 ImageMagick 字型查找是壞的**：`montage`（即使最小用法）與 `convert -annotate`
+  都直接 SIGABRT core dump，`convert` 的 resize/crop/append 正常。給 `-font <絕對路徑>`
+  就能繞過。縮圖牆改用 `convert +append` / `-append` 疊。
+- **字卡要用 PIL 產，不能用 ImageMagick 或 ffmpeg drawtext**：兩者都無法指定 TTC 的
+  **字面索引**，而 `NotoSansCJK-Bold.ttc` 的 face 0 是**日文**、繁體是 face 3。
+  用錯字面，卡片上的字會是日文字形。PIL 的 `ImageFont.truetype(path, size, index=3)` 可以。
+- **深處畫面 headless 到不了，別硬鑽。** 除錯器 `room` 跳房實測十次只成功一兩次；
+  走動只到得了鄰近的走廊。改成「在同一個場景裡逐一『看』十個東西」，一輪就撈到六句
+  不同台詞，比冒險換場穩定得多（`tools/capture_lines.sh`）。
+
 ## headless 驅動
 
 - PQ3 的圖示列平常收起來，**滑鼠碰到畫面頂端才降下**。直接點座標會全部落空，
