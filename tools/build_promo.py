@@ -67,7 +67,7 @@ def scene_sbs(en_path, cht_path):
 def card_open():
     c = Image.new("RGB", (W, H), "black")
     d = ImageDraw.Draw(c)
-    centred(d, 250, "警察故事3 — 血親", 62)
+    centred(d, 250, "警察故事Ⅲ 陰謀", 62)
     centred(d, 340, "Police Quest 3: The Kindred", 26, GREY)
     centred(d, 420, "繁體中文化", 38, GOLD)
     return c
@@ -78,7 +78,7 @@ def card_close():
     d = ImageDraw.Draw(c)
     centred(d, 150, "2,772 則遊戲文字中譯", 44, GOLD)
     centred(d, 240, "中文以 640×400 直接繪進畫面，不是把 320×200 的字放大", 24)
-    centred(d, 285, "字模為倚天中文系統點陣字，1,952 字全數命中字庫", 24)
+    centred(d, 285, "字模為倚天中文系統點陣字，1,953 字全數命中字庫", 24)
     d.line([(340, 360), (940, 360)], fill=(70, 70, 70), width=2)
     centred(d, 400, "github.com/wicanr2/police-quest-3-cht", 26, GREY)
     centred(d, 500, "原作腳本 Jim Walls", 26)
