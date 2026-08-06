@@ -12,7 +12,7 @@
 
 ![標題畫面](screenshots/00-title.png)
 
-四十秒的[推廣片](https://github.com/wicanr2/police-quest-3-cht/releases/download/v1.1/pq3-cht-promo.mp4)（英文原版與中文化左右對照，配樂是原版遊戲音樂）。
+四十秒的[推廣片](https://github.com/wicanr2/police-quest-3-cht/releases/download/v1.2/pq3-cht-promo.mp4)（英文原版與中文化左右對照，配樂是原版遊戲音樂）。
 
 ---
 
